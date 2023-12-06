@@ -1,5 +1,6 @@
 <script>
 	import {
+		Button,
 		Table,
 		TableBody,
 		TableBodyCell,
@@ -7,7 +8,21 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
+
+	let getTrainTimes = async () => {
+		const response = await fetch('https://ptvapiwrapper.azurewebsites.net/trains/get-all-routes')
+			.then((response) => response.json())
+			.then((data) => {
+				times = data;
+			})
+			.catch((err) => {
+				console.log(err);
+				times = [];
+			});
+	};
 </script>
+
+<Button on:click={getTrainTimes}>Get Train Times</Button>
 
 <Table>
 	<TableHead>

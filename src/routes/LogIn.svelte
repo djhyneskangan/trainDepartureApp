@@ -1,5 +1,22 @@
 <script>
 	import { Label, Input, Button } from 'flowbite-svelte';
+	import { supabase } from '$lib/supabase.js';
+	import { goto } from '$app/navigation';
+
+	let email = '';
+	let password = '';
+
+	async function signInWithEmail() {
+		const { data, error } = await supabase.auth.signInWithPassword({
+			email: email,
+			password: password
+		});
+		if (data) {
+			goto('/departureTimetable');
+			console.log(data);
+		} else error;
+		console.log(error);
+	}
 </script>
 
 <div class="text-center py-11">
@@ -7,15 +24,21 @@
 </div>
 
 <div>
-	<form class="w-96 mx-auto">
+	<form on:submit|preventDefault={signInWithEmail} class="w-96 mx-auto">
 		<div class="mb-4">
 			<Label for="email">Email</Label>
-			<Input class="mb-3" id="email" type="email" placeholder="Email" />
+			<Input class="mb-3" id="email" type="email" bind:value={email} placeholder="Email" />
 		</div>
 
 		<div class="mb-4">
 			<Label for="password">Password</Label>
-			<Input class="mb-3" id="password" type="password" placeholder="Password" />
+			<Input
+				class="mb-3"
+				id="password"
+				type="password"
+				bind:value={password}
+				placeholder="Password"
+			/>
 		</div>
 
 		<div class="mt-14 flex justify-center">
