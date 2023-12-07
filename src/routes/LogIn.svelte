@@ -17,6 +17,16 @@
 		} else error;
 		console.log(error);
 	}
+
+	async function logInGitHub() {
+		let session= supabase.auth.session;
+		console.log("session: ", session);
+		const { data, error } = await supabase.auth.signInWithOAuth({
+			provider: 'github' ,
+		});
+	}
+
+
 </script>
 
 <div class="text-center py-11">
@@ -44,7 +54,6 @@
 		<div class="mt-14 flex justify-center">
 			<Button class="mr-1" type="submit">Log in</Button>
 
-			<Button type="submit">Sign In With GitHub</Button>
 		</div>
 
 		<div class="mt-12 text-sm">
@@ -54,4 +63,6 @@
 			<a href="/">Forgot your password?</a>
 		</div>
 	</form>
+	<Button type="submit" on:click={logInGitHub}>Sign In With GitHub</Button>
+
 </div>
