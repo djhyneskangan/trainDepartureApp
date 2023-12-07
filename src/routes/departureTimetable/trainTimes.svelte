@@ -9,11 +9,23 @@
 		TableHeadCell
 	} from 'flowbite-svelte';
 
+	let times = [];
+
 	let getTrainTimes = async () => {
-		const response = await fetch('https://ptvapiwrapper.azurewebsites.net/trains/get-all-routes')
+		const apiKey = 'pDDuZJyKSfzVU1zRriSw4vWvzpRAoGIAtw0osQPqkwn9MOIpOVpGTeEoMM94jXZw';
+		const headers = {
+			'X-Api-Key': apiKey,
+			'Content-Type': 'application/json'
+		};
+
+		const response = await fetch('https://ptvapiwrapper.azurewebsites.net/trains/get-all-routes', {
+			method: 'GET',
+			headers: headers
+		})
 			.then((response) => response.json())
 			.then((data) => {
 				times = data;
+				console.log(times);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -24,31 +36,21 @@
 
 <Button on:click={getTrainTimes}>Get Train Times</Button>
 
-<Table>
+<Table class="table-fixed">
 	<TableHead>
-		<TableHeadCell>Train Line</TableHeadCell>
+		<TableHeadCell class="max-w-sm">Train Line</TableHeadCell>
 		<TableHeadCell>Platform/Time</TableHeadCell>
 		<TableHeadCell>Platform/Time</TableHeadCell>
 		<TableHeadCell>Platform/Time</TableHeadCell>
 	</TableHead>
 	<TableBody class="divide-y">
-		<TableBodyRow>
-			<TableBodyCell>Alameinjjjjjjjjjjjjjjj</TableBodyCell>
-			<TableBodyCell>5 mins</TableBodyCell>
-			<TableBodyCell>15 mins</TableBodyCell>
-			<TableBodyCell>25 mins</TableBodyCell>
-		</TableBodyRow>
-		<TableBodyRow>
-			<TableBodyCell>Cragieburn</TableBodyCell>
-			<TableBodyCell>18 mins</TableBodyCell>
-			<TableBodyCell>25 mins</TableBodyCell>
-			<TableBodyCell>35 mins</TableBodyCell>
-		</TableBodyRow>
-		<TableBodyRow>
-			<TableBodyCell>Frankston</TableBodyCell>
-			<TableBodyCell>10 mins</TableBodyCell>
-			<TableBodyCell>34 mins</TableBodyCell>
-			<TableBodyCell>45 mins</TableBodyCell>
-		</TableBodyRow>
+		{#each times as time}
+			<TableBodyRow>
+				<TableBodyCell class="truncate...">{time.route_name}</TableBodyCell>
+				<TableBodyCell>5 mins</TableBodyCell>
+				<TableBodyCell>15 mins</TableBodyCell>
+				<TableBodyCell>25 mins</TableBodyCell>
+			</TableBodyRow>
+		{/each}
 	</TableBody>
 </Table>
