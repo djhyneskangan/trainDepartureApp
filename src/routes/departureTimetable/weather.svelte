@@ -15,17 +15,27 @@
 	.weather-info {
 		border: 1px solid #000;
 		padding: 15px;
-		width: 28%;
+		width: 35%;
 		margin-left: auto;
 		margin-right: 0;
+	}
+	.temp-container {
+		display: flex;
+		align-items: center;
+	}
+	.temp-container img {
+		margin-right: 10px;
 	}
 </style>
 
 <div>
 	{#if weatherData.main}
-		<div class="mb-2 text-2  font-bold  weather-info">
+		<div class="mb-2 text-3  font-bold  weather-info">
 			<h1>{weatherData.name}</h1>
-			<h5 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{Math.round(weatherData.main.temp - 273.15)}°C</h5>
+			<div class="temp-container">
+				<img src="http://openweathermap.org/img/w/{(weatherData.weather && weatherData.weather[0].icon) || ''}.png" alt="Weather Icon" />
+				<h5 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{Math.round(weatherData.main.temp - 273.15)}°C</h5>
+			</div>
 			<p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">{weatherData.weather[0].description}</p>
 		</div>
 	{/if}
